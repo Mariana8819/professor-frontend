@@ -1,13 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Card, CardContent, CircularProgress, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useListStudentsFromClassById } from '../../../hooks/use-list-students-from-class-by-id/use-list-students-from-class-by-id.hook';
+import { StudentDrawer } from '../components/studentDrawer/StudenDrawer';
+
+interface Student {
+  id: string;
+  name: string;
+  status: string;
+  classCode: string; 
+}
 
 export const StudentsScreen: React.FC = () => {
   const { classId } = useParams<{ classId: string }>();
   const navigate = useNavigate();
   const { result: studentsInfo, loading, error } = useListStudentsFromClassById({ classId: classId! });
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+
+  const handleStudentClick = (student: Student) => {
+    setSelectedStudent(student);
+  };
+
+  const handleCloseDrawer = () => {
+    setSelectedStudent(null);
+  }
+
+  console.log('datos del studentsInfo studentscreen', studentsInfo);
 
   const handleBackClick = () => {
     navigate('/'); 
@@ -24,7 +43,7 @@ export const StudentsScreen: React.FC = () => {
           Alunos da Turma: {classId}
         </Typography>
       </Box>
-
+ 
       {loading && <CircularProgress />}
       {error && <Typography color="error">{error}</Typography>}
       
@@ -38,10 +57,11 @@ export const StudentsScreen: React.FC = () => {
           {studentsInfo.map((student) => (
             <Box
               key={student.id}
+              onClick={()=> handleStudentClick(student)}
               sx={{
                 width: { xs: '100%', sm: '45%', md: '30%' },
                 padding: '1rem'
-              }}
+              }}              
             >
               <Card sx={{ height: '100%', boxShadow: 3 }}>
                 <CardContent>
@@ -61,6 +81,10 @@ export const StudentsScreen: React.FC = () => {
         </Box>
       ) : (
         !loading && <Typography>Nenhum aluno encontrado.</Typography>
+      )}
+
+      {selectedStudent && (
+        <StudentDrawer student={selectedStudent} onClose={handleCloseDrawer} />
       )}
     </Box>
   );

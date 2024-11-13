@@ -15,6 +15,7 @@ export const useListStudentsFromClassById = ({ classId }: UseListStudentsFromCla
           urlBase: 'http://localhost:8080',
           classId,
         });
+        console.log('aqui mi mensaje de response',response);
 
         setResult(response);
       } catch (err) {

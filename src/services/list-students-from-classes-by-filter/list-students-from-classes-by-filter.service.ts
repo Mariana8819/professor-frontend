@@ -9,9 +9,12 @@ export const listStudentsFromClassByIdService: ListStudentsFromClassByIdService 
   classId,
 }) => {
 
+  const url = `${urlBase}/class/${classId}/students`;  //esto agregue
+  console.log("URL de la API:", url); //esto agregue
   const { data } = await axios.get<ListStudentsFromClassByIdServiceResult>(
     `${urlBase}/class/${classId}/students`,
   );
 
+  console.log('Retorno students:::', data)
   return data;
 };

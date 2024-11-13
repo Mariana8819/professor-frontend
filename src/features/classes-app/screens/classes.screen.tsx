@@ -3,7 +3,7 @@ import { Box, Card, CardContent, CircularProgress, Typography } from "@mui/mater
 import { useListProfessorClassesById } from '../../../hooks/use-list-professor-classes-by-id/use-list-professor-classes-by-id.hook';
 import { useNavigate } from 'react-router-dom';
 
-export const ClassesScreen: React.FC = () => {
+export const ClassesScreen: React.FC = () => { 
   
   const navigate = useNavigate();
   const { result: classesInfo, loading, error } = useListProfessorClassesById({ professorId: 'PROF001' });
